@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JL Agropecuária - Medicamentos Veterinários</title>
+<style>
+  :root {
+    --verde: #2e7d32;
+    --verde-escuro: #1b5e20;
+    --verde-claro: #a5d6a7;
+    --amarelo: #f9a825;
+    --cinza-fundo: #f4f6f4;
+    --branco: #ffffff;
+    --texto: #263238;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--cinza-fundo);
+    color: var(--texto);
+  }
+  a { text-decoration:none; }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--verde-escuro), var(--verde));
+    color: #fff;
+    padding: 18px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .logo {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:1.6rem;
+    font-weight:800;
+  }
+  .logo span.icon { font-size:2rem; }
+  .tagline {
+    font-size:0.85rem;
+    opacity:0.9;
+    font-weight:300;
+  }
+  .whatsapp-header {
+    background: #25D366;
+    color:#fff;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:600;
+    font-size:0.9rem;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition: transform 0.2s;
+  }
+  .whatsapp-header:hover { transform: scale(1.05); }
+
+  /* HERO */
+  .hero {
+    background: url('https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1400&q=60') center/cover no-repeat;
+    position: relative;
+    padding: 60px 20px;
+    text-align:center;
+    color:#fff;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    background: rgba(27,94,32,0.75);
+  }
+  .hero-content { position:relative; z-index:2; max-width:700px; margin:0 auto; }
+  .hero h1 { font-size:2.2rem; margin-bottom:10px; }
+  .hero p { font-size:1.05rem; opacity:0.95; }
+
+  /* BUSCA */
+  .busca-wrapper {
+    max-width: 700px;
+    margin: -25px auto 0;
+    padding: 0 20px;
+    position: relative;
+    z-index: 5;
+  }
+  #busca {
+    width:100%;
+    padding: 15px 20px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-size:1rem;
+    outline:none;
+  }
+  #busca:focus { box-shadow: 0 4px 15px rgba(46,125,50,0.4); }
+
+  /* CONTADOR */
+  .contador {
+    max-width:1200px;
+    margin: 25px auto 0;
+    padding: 0 20px;
+    font-size:0.95rem;
+    color:#555;
+  }
+
+  /* GRID DE PRODUTOS */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+  }
+  .card {
+    background: var(--branco);
+    border-radius: 14px;
+    overflow:hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    display:flex;
+    flex-direction:column;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  .card-img {
+    width:100%;
+    height: 180px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px;
+  }
+  .card-img img {
+    max-width:100%;
+    max-height:100%;
+    object-fit: contain;
+  }
+  .card-body {
+    padding: 14px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+  }
+  .card-title {
+    font-size:0.92rem;
+    font-weight:600;
+    line-height:1.3;
+    min-height: 42px;
+    margin-bottom:10px;
+    color: var(--texto);
+  }
+  .card-preco {
+    font-size:1.3rem;
+    font-weight:800;
+    color: var(--verde);
+    margin-bottom:12px;
+    margin-top:auto;
+  }
+  .btn-comprar {
+    background: var(--verde);
+    color:#fff;
+    text-align:center;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight:600;
+    font-size:0.85rem;
+    transition: background 0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+  }
+  .btn-comprar:hover { background: var(--verde-escuro); }
+
+  .sem-resultado {
+    text-align:center;
+    padding: 60px 20px;
+    color:#777;
+    font-size:1.1rem;
+    display:none;
+  }
+
+  /* BOTÃO VOLTAR AO TOPO */
+  #topo {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--amarelo);
+    color:#fff;
+    width:45px; height:45px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.3rem;
+    cursor:pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.3s;
+    z-index: 90;
+  }
+  #topo.show { opacity:1; pointer-events:auto; }
+
+  /* FOOTER */
+  footer {
+    background: var(--verde-escuro);
+    color:#fff;
+    text-align:center;
+    padding: 30px 20px;
+    margin-top: 40px;
+  }
+  footer p { margin: 6px 0; font-size:0.9rem; opacity:0.9; }
+  footer .footer-logo { font-size:1.3rem; font-weight:700; margin-bottom:10px; }
+
+  /* RESPONSIVO */
+  @media (max-width: 600px) {
+    .hero h1 { font-size:1.6rem; }
+    .logo { font-size:1.3rem; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:12px; }
+    .card-img { height:140px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div>
+      <div class="logo"><span class="icon">🐄</span> JL Agropecuária</div>
+      <div class="tagline">Saúde e bem-estar para seus animais</div>
+    </div>
+    <a href="https://wa.me/5535910021310" target="_blank" class="whatsapp-header">
+      💬 Fale com a loja
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Medicamentos Veterinários de Confiança</h1>
+    <p>Os melhores produtos para bovinos, equinos, aves, cães e gatos.</p>
+  </div>
+</section>
+
+<div class="busca-wrapper">
+  <input type="text" id="busca" placeholder="🔍 Buscar medicamento por nome...">
+</div>
+
+<div class="contador" id="contador"></div>
+
+<div class="container">
+  <div class="grid" id="grid"></div>
+  <div class="sem-resultado" id="semResultado">😕 Nenhum produto encontrado. Tente outro termo.</div>
+</div>
+
+<div id="topo" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<footer>
+  <div class="footer-logo">🐄 JL Agropecuária</div>
+  <p>📍 Av. Emb. Bilac Pinto, 20 - São Roque -  Santa Rita do Sapucaí, MG</p>
+  <p>📞 (35) 9 1002-1310</p>
+</footer>
+
+<script>
+  // ================== CONFIGURAÇÃO ==================
+  const whatsappNumero = "5535910021310"; // <-- ALTERE para o número real da loja (com DDI+DDD)
+
+  // ================== LISTA DE PRODUTOS ==================
+  const produtos = [
+    {nome:"NexGard Spectra 2 a 3,5kg", preco:"R$90,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_890358-MLA97217364353_112025-F.webp"},
+{nome:"NexGard 2 a 4 KG", preco:"R$90,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_651638-MLA99936930683_112025-F.webp"},
+{nome:"NexGard 4,1 a 10 KG", preco:"R$99,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_896126-MLB101896944573_122025-F-nexgard-41-a-10-kg--caixa-com-3-comprimidos.webp"},
+{nome:"NexGard 10,1 a 25 KG", preco:"R$120,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_861686-MLB101286864686_122025-F-nexgard-101-a-25-kg--caixa-com-3-comprimidos.webp"},
+{nome:"NexGard 25,1 a 50 KG", preco:"R$140,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_631012-MLA100018783777_122025-F.webp"},
+{nome:"Credeli 1,3 a 2,5 KG", preco:"R$75,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_622203-MLA108421454749_032026-F.webp"},
+{nome:"Credeli 2,5 a 5,5 KG", preco:"R$80,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_660832-MLB92301472338_092025-F-antipulgas-e-carrapatos-credeli-caes-de-25-a-55-kg-1-comp.webp"},
+{nome:"Credeli 5,5 a 11,0 KG", preco:"R$90,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_697248-MLB92893344799_092025-F-antipulgas-e-carrapatos-credeli-caes-de-55-a-11-kg--1-comp.webp"},
+{nome:"Credeli 11,0 a 22,0 KG", preco:"R$110,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_699338-MLB92316335550_092025-F-antipulgas-e-carrapatos-credeli-caes-de-11-a-22-kg--1-comp.webp"},
+{nome:"Credeli 22,0 a 45,0  KG", preco:"R$130,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_659843-MLA98917015338_112025-F.webp"},
+{nome:"Capstar 11,5 a 57,0 KG", preco:"R$40,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_876628-MLA114065946211_072026-F.webp"},
+{nome:"Capstar 1,0 a 11,4 KG", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_698400-MLB82795385571_022025-F-pode-passar-mata-bicheira-em-cachorro-capstar-01114kg-1-cp.webp"},
+{nome:"Calciobiox 100 ML", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_745277-MLA99373359288_112025-F.webp"},
+{nome:"FloraFarm Pet 14g", preco:"R$40,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_812343-MLB113670820805_062026-F.webp"},
+{nome:"Gentamasti L Vacas Lactantes 10 G", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_610924-MLA99973035047_112025-F.webp"},
+{nome:"Gentamasti L Vaca Seca 10 G", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_663508-MLA99520639740_112025-F.webp"},
+{nome:"Triatox 200 ML", preco:"R$60,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_807637-MLA99853980627_112025-F.webp"},
+{nome:"Biodex", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_708409-MLA99440126942_112025-F.webp"},
+{nome:"Con Front Plus 02 a 10 KG", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_929066-MLA99610330528_122025-F.webp"},
+{nome:"Deltametrina Coleira Antipulga Cães Grabdes 25 g", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_821750-MLA99602228072_122025-F.webp"},
+{nome:"Deltametrina Coleira Antipulga Cães Pequenos/Médios 19 g", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_622375-MLA100052365301_122025-F.webp"},
+{nome:"Ec-pet Puron Cães Acima De 40kg", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_755439-MLA100080963319_122025-F.webp"},
+{nome:"Déxium Dexametasona C/ 20 Comprimidos", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_720557-MLA108852757116_032026-F.webp"},
+{nome:"Colírio Ucbvet 15 Ml Para Cães E Gatos", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_963773-MLB110887380631_042026-F-colirio-ucbvet-15-ml-para-caes-e-gatos.webp"},
+{nome:"Pipi Natu Dog", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_675847-MLU74528924192_022024-F.webp"},
+{nome:"Sulfamicina Oral Ibasa Para Aves 20ml", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_811652-MLA99358422316_112025-F.webp"},
+{nome:"Anticion 1ml Anticoncepcional", preco:"R$10,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_694790-MLA115268511679_072026-F.webp"},
+{nome:"Soro Antiofídico 50ml", preco:"R$120,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_999366-MLA108422571445_032026-F.webp"},
+{nome:"Soro Antitetânico Lema Injex Cavalo 5ml", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_620834-MLA100070953077_122025-F.webp"},
+{nome:"Vitagold Potenciado 50ml", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_871514-MLB77756959576_072024-F-suplemento-vitaminico-caes-gatos-vitagold-potenciado-50ml.webp"},
+{nome:"Proverme 28 g", preco:"R$10,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_626838-MLB76133885535_052024-F-proverme-28g-kit-com-05-unidades.webp"},
+{nome:"Seringa Veterinária Esterilizável 25ml Atóxica Clean", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_881164-MLU72188815123_102023-F.webp"},
+{nome:"Terracam Plus Oxitetraciclina Base Agener União 50ml", preco:"R$45,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_846100-MLA100102934635_122025-F.webp"},
+{nome:"Terracam Spray Cicatrizante 125ml Agener União", preco:"R$45,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_717897-MLA99614586494_122025-F.webp"},
+{nome:"Terramicina Pó Com Antigerm 77 100g Solúvel Zoetis", preco:"R$45,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_702686-MLB99598211348_122025-F-kit-2-terramicina-po-com-antigerm-77-100g-soluvel-zoetis.webp"},
+{nome:"Terramicina La 50ml - Zoetis", preco:"R$40,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_782629-MLB112207866686_062026-F-terramicina-la-50ml--zoetis.webp"},
+{nome:"Trissulfin Pó 50 g", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_681070-MLB103355054102_012026-F-trissulfin-po-50-gr.webp"},
+{nome:"IverClin Gold Ivermectina 12mg", preco:"R$20,00", img:"https://agropetweb.com.br/wp-content/uploads/2021/07/IverClin-Gold-Ivermectina-12mg.jpg"},
+{nome:"IverClin Gold Ivermectina 6mg", preco:"R$20,00", img:"https://agropetweb.com.br/wp-content/uploads/2021/07/IverClin-Gold-Ivermectina-6mg.jpg"},
+{nome:"IverClin Gold Ivermectina 3mg", preco:"R$20,00", img:"https://agropetweb.com.br/wp-content/uploads/2021/07/IverClin-Gold-Ivermectina-3mg.jpg"},
+{nome:"IverClin Gold Ivermectina 1mg", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_943349-MLB109514355050_042026-F-iverclin-gold-ivermectina-1mg-para-caes-e-gatos-48-comprimid.webp"},
+{nome:"Bio Line 100ml Fipronil Antipulgas E Carrapatos Caes Gatos", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_893130-MLA108419858149_032026-F.webp"},
+{nome:"Espanta Repele Pombos Morcegos Passaro Formiga 280ml", preco:"R$80,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_825659-MLA99895013343_112025-F.webp"},
+{nome:"Tanicid 200gr Indubras Contra Bicheira, Pulgas E Carrapatos", preco:"R$40,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_696784-MLA100081674639_122025-F.webp"},
+{nome:"Vermífugo Natu Verm Comprimido Para Cães e Gatos", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_754111-MLA99446002946_112025-F.webp"},
+{nome:"Vermífugo Equino Equivet Gold 6,42g vetbras Pasta Oral Para Cavalos", preco:"R$18,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_637930-MLA100084396799_122025-F.webp"},
+{nome:"Lema Inibidex 1ml Anticoncepcional (dose Única)", preco:"R$8,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_832965-MLB111191557753_052026-F-lema-inibidex-1ml-anticoncepcional-dose-unica-caes-e-gatos.webp"},
+{nome:"Suplemento Horsefil M.o Gel Turbo 2 Seringas 34g Equinos", preco:"R$60,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_924647-MLB110280649029_042026-F.webp"},
+{nome:"Equest Vermífugo Para Equinos 12,2g - Zoetis", preco:"R$69,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_785152-MLA114547818925_072026-F.webp"},
+{nome:"Suplemento Líquido Cálcio 250mL Bovinos Equinos Caprinos ValléeCálcio", preco:"R$40,00", img:"https://bassopancotte.com.br/imagem/produto/id/357/width/570/height/570/index/0?h=2da582bd44e69cc8ec4eb12bbaf63c8e1331223e"},
+{nome:"Anti Pulgas Alpha Ciper 20ml", preco:"R$7,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_956808-MLA96659874023_102025-F.webp"},
+{nome:"Butox 20ml", preco:"R$8,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_933416-MLA99957345645_112025-F.webp"},
+{nome:"Bioxan Vitamina B1 Líquida Valle 500 ML Para Animais Adultos", preco:"R$45,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_900692-MLB108958110933_032026-F.webp"},
+{nome:"Stop Antidiarreico Sachê 10g", preco:"R$10,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_725186-MLB113805234941_062026-F.webp"},
+{nome:"Potenay 10ML Zoets Revigorante Vitaminico", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_973456-MLA114343330919_072026-F.webp"},
+{nome:"Suplemento Potemin B12 Vetbras 120ml Vitaminas para Animais", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_869253-MLA99360340202_112025-F.webp"},
+{nome:"Mata Bicheira Larvicida Cidental 250ml - Bimeda", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_854375-MLB92381078476_092025-F.webp"},
+{nome:"Mata Bicheira Fort Dodge Zoetis 500ml", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_711438-MLA99598076714_122025-F.webp"},
+{nome:"Mata Bicheira Prata Spray Aerocid Total 500ml Agener União", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_858555-MLB81959470911_012025-F-mata-bicheira-prata-spray-aerocid-total-500ml-agener-uniao.webp"},
+{nome:"Creolina Concentrada 50mL Desinfetante Germicida", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_863031-MLB110893463557_042026-F.webp"},
+{nome:"Meloxifarm Vet Farmos 1mg Anti-inflamatório Cães e Gatos", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_925986-MLA99391003092_112025-F.webp"},
+{nome:"Meloxifarm Vet Farmos 2mg Anti-inflamatório Cães e Gatos", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_940645-MLB75588350582_042024-F-meloxifarm-20-mg--tira-dor--contra-mordidas-e-feridas.webp"},
+{nome:"Enronew 50mg Cães e Gatos", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_853730-MLA99925976173_112025-F.webp"},
+{nome:"Enronew 150mg Cães e Gatos", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_697629-MLA99918410627_112025-F.webp"},
+{nome:"Meloxiworld 0,5mg Anti-inflamatório", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_972037-MLB92376670495_092025-F-meloxiworld-05mg-antiinflamatorio-dores-febre---world.webp"},
+{nome:"Cefaworld 150 Mg Cães E Gatos", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_659676-MLA100043930911_122025-F.webp"},
+{nome:"Doxinew 50mg", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_744175-MLA99358554718_112025-F.webp"},
+{nome:"Doxinew 100mg", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_820915-MLA99400057242_112025-F.webp"},
+{nome:"Doxinew 200mg", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_633690-MLA99842259169_112025-F.webp"},
+{nome:"Triclorsil (neguvon) Pó Sachê 20gr Vansil", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_947361-MLB92290199049_092025-F-triclorsil-neguvon-po-sache-20gr-vansil.webp"},
+{nome:"Pro Bezerro Seringa 5ml", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_844717-MLB91134995303_082025-F.webp"},
+{nome:"Biotrin Vet Canto 20ml", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_662944-MLA100065245243_122025-F.webp"},
+{nome:"Biotrin Vet Cálcio B12 20ml", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_742497-MLB93820225133_092025-F-biotrin-vet-calcio-b12-20ml-vetbras.webp"},
+{nome:"Biotrin Vet 100 PS 20ml", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_701742-MLA103122866441_122025-F.webp"},
+{nome:"Avicil Muda - Suplemento Mineral E Vitamínico - 15 Ml", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_662902-MLB73237150357_122023-F-avicil-muda--suplemento-mineral-e-vitaminico--15-ml.webp"},
+{nome:"Vitagold Potenciado Frasco 20ml", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_902881-MLA99442316380_112025-F.webp"},
+{nome:"Vermífugos Para Aves Gogo Sanagogo 20ml", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_928433-MLA98896170897_112025-F-vermifugos-para-aves-gogo-sanagogo-20ml.webp"},
+{nome:"Ocitocina 50ml", preco:"R$10,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_697941-MLA99949850223_112025-F.webp"},
+{nome:"Penfort Reforçado", preco:"R$45,00", img:"https://www.ourofinosaudeanimal.com/media/uploads/produtos/2023/FR_Penfort_Reforcado_Novo.png"},
+{nome:"Penfort Ppu 50ml Ouro Fino Antibiotico", preco:"R$55,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_871007-MLB89881319286_082025-F-penfort-ppu-50ml-ouro-fino-antibiotico--original.webp"},
+{nome:"Agrosil PPU Vansil 50ml Antibiótico Injetável", preco:"R$75,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_610598-MLA99450021032_112025-F.webp"},
+{nome:"Corta Curso 50ml Ourofino", preco:"R$60,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_838404-MLB110510139343_042026-F.webp"},
+{nome:"Tribrissen 15 ML - Virbac", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_827214-MLA99897118637_112025-F.webp"},
+{nome:"Trissulfin Ourofino Antimicrobiano Injetável 50ml", preco:"R$55,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_883210-MLA99627215946_122025-F-trissulfin-ourofino-antimicrobiano-injetavel-50ml.webp"},
+{nome:"Monovin K Suplemento Coagulante Anti-hemorrágico 20mL", preco:"R$40,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_881229-MLA108014753867_032026-F.webp"},
+{nome:"Mercepton Injetavel 20ml - Bravet", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_823484-MLA109716259318_042026-F-v-mercepton-injetavel-20ml--bravet.webp"},
+{nome:"Tyladen 50 Ml - Antibiótico E Antimicrobiano - Ceva", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_820732-MLB97238476783_112025-F-tyladen-50-ml--antibiotico-e-antimicrobiano--ceva.webp"},
+{nome:"Cortvet 10mL -UCB | Inflamações, reumatismo, luxações e tendinites", preco:"R$20,00", img:"https://io.convertiez.com.br/m/lojaagropecuaria/shop/products/images/958/medium/cortvet-10-ml_182043.jpg"},
+{nome:"Verrudel 20ml", preco:"R$25,00", img:"https://images.tcdn.com.br/img/img_prod/953490/verrudel_20ml_6245_1_c50e9e9f90f37caa2d8133e3468d47c2.jpg"},
+{nome:"Antitóxico Jofatox Injetável 20 mL", preco:"R$20,00", img:"https://bassopancotte.com.br/imagem/produto/id/2537/width/570/height/570/index/0?h=8985d4cb91945829f8ef5b06e0deceefe98a0e5d"},
+{nome:"Óleo Canforado UCB 20ml Uso Veterinário Animal", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_754688-MLA100110627243_122025-F.webp"},
+{nome:"Sincrocio 4ml Ourofino", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_908545-MLB108407843257_032026-F-sincrocio-4ml-ourofino.webp"},
+{nome:"D500 50ml Zoetis Analgésico Inj. P/ Equinos, Bovinos, Suínos", preco:"R$45,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_938147-MLB106420685621_022026-F-d500-50ml-zoetis-analgesico-inj-p-equinos-bovinos-suinos.webp"},
+{nome:"Dectomax Zoetis Injetável Frasco 50ml", preco:"R$60,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_763138-MLA100075157567_122025-F.webp"},
+{nome:"Ferron B12 50 Ml Vitamina E Ferro", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_884601-MLB89840127360_082025-F.webp"},
+{nome:"Colosso Pulverização De Ambiente Ourofino 100ml", preco:"R$40,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_614626-MLB79376156612_092024-F.webp"},
+{nome:"DEXA CALBOS 50mL", preco:"R$30,00", img:"https://calbos.com.br/wp-content/uploads/2023/08/dexa-2-1.png"},
+{nome:"DEXA CALBOS 10mL", preco:"R$20,00", img:"https://calbos.com.br/wp-content/uploads/2023/08/dexa-2-1.png"},
+{nome:"Dexametasona Calbos 10mL - Anti-inflamatório", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_980069-MLA105502962107_012026-F-dexametason-calbos-10m--antiinflamatorio.webp"},
+{nome:"Vit Ade Calbos Suplemento E Estimulante Vitamínico 50 mL", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_893324-MLB89597023322_082025-F-vit-ade-calbos-suplemento-e-estimulante-vitaminico-50-ml.webp"},
+{nome:"Phenodral Tônico Estimulante Ampola 15ml - Ucbvet", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_844806-MLB90768744793_082025-F-phenodral-tonico-estimulante-ampola-15ml--ucbvet.webp"},
+{nome:"Ripercol L Vermífugo Bovino Injetável 100mL Zoetis", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_950211-MLA99599295328_122025-F.webp"},
+{nome:"Tintura De Iodo 10% 100 mL", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_980425-MLB52873122027_122022-F-tintura-de-iodo-10-100-ml.webp"},
+{nome:"Ivomec Injetável 50ml", preco:"R$45,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_678482-MLB112493700008_062026-F.webp"},
+{nome:"Agrovet Plus 50 mL Grandesolução Injetável", preco:"R$75,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_986643-MLB108474286596_032026-F-agrovet-plus-50-ml-grandesolucao-injetavel-veterinaria.webp"},
+{nome:"CEF 50mg/ml SUS Injeção 30ml", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_663196-MLA99456769610_112025-F.webp"},
+{nome:"Sulfaprim Bravet C/ 10 Comprimidos", preco:"R$60,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_679633-MLB45564423029_042021-F-sulfaprim-bravet-c-10-comprimidos.webp"},
+{nome:"Cort-trat Sm 20cp", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_996991-MLB86526269616_062025-F.webp"},
+{nome:"Bioxan Vallee 500 mL", preco:"R$45,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_900692-MLB108958110933_032026-F.webp"},
+{nome:"Otodermin 20mL Bravet", preco:"R$60,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_705766-MLA84975122991_052025-F-otodermin-20ml-bravet-caes-e-gatos-tratamento-otites.webp"},
+{nome:"Chemitril Oral 10% - 10mL", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_610621-MLB106531985342_022026-F-chemitril-oral-10--10ml.webp"},
+{nome:"Dexium 10 mL Solução Injetável", preco:"R$20,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_943799-MLB103614718082_012026-F-dexium-10-ml-solucao-injetavel.webp"},
+{nome:"Glicocil Suplemento Vitamínico Mineral Aminoácido", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_858008-MLB110325100205_042026-F-glicocil-suplemento-vitaminico-mineral-aminoacido-caes-gatos.webp"},
+{nome:"Glicovet Gold 30ml Suplemento Vitamínico", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_743954-MLA99999495520_122025-F.webp"},
+{nome:"Tussedan 100ml", preco:"R$70,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_695054-MLB84415502594_052025-F-qual-o-melhor-remedio-para-tosse-de-caes-tussedan-100ml.webp"},
+{nome:"Matacura Antisséptico 90g", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_852058-MLB112994305787_062026-F-kit-sabonetes-matacura-antipulgas-80g--mais-antisseptico-90g.webp"},
+{nome:"Matacura Sarnicida e Antipulgas 80g", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_971253-MLB90293960166_082025-F.webp"},
+{nome:"Pomada Cicatrizante Saralogo 30 g", preco:"R$30,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_767243-MLB49560649955_042022-F-pomada-cicatrizante-saralogo-para-caes-e-gatos-30-gramas.webp"},
+{nome:"Ectonil Pour On Carrapaticida Pulverização Mosquicida 1L", preco:"R$50,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_631452-MLA94945653696_102025-F.webp"},
+{nome:"Poderoso Kelldrin 30mL", preco:"R$25,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_644371-MLB112639009204_062026-F.webp"},
+{nome:"Kelldrin Sc 25 Mata Baratas Aranhas Escorpiões 30mL", preco:"R$18,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_656016-MLA99395514626_112025-F.webp"},
+{nome:"K-othrine Sc 25 Envu 30mL", preco:"R$18,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_688294-MLA99358468720_112025-F.webp"},
+{nome:"Formilix 100% Eficaz Contra Formiga Carrapatos Pulgas Barata", preco:"R$40,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_715449-MLA99883960203_112025-F.webp"},
+{nome:"Formiline 500 mL", preco:"R$35,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_769817-MLB108905614108_032026-F.webp"},
+{nome:"Seringa 5mL com agulha", preco:"R$1,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_764215-MLA92283299012_092025-F.webp"},
+{nome:"Seringa 20mL com agulha", preco:"R$5,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_636268-MLA79648126853_092024-F.webp"},
+{nome:"Soro Ringer com Lactato 1000 mL", preco:"R$25,00", img:"https://acdn-us.mitiendanube.com/stores/001/945/313/products/design-sem-nome-2025-04-08t164440-484-a75ff429387823d96e17441414858531-1024-1024.webp"},
+{nome:"Ratokill Soft Bait sachê 10g Insetimax", preco:"R$2,00", img:"https://img.irroba.com.br/fit-in/600x600/filters:format(webp):fill(fff):quality(80)/agroeioa/catalog/2021052517-ratokill-soft-bait.jpg"},
+{nome:"Raticida Pik-Rato Girassol 25 g", preco:"R$2,00", img:"https://cdn.petbontrato.com.br/cache/catalog/HIMG465190-650x650.JPG"},
+{nome:"Raticida Pik-Rato 25 g", preco:"R$2,00", img:"https://cdn.ciadopet.net/cache/catalog/HIMG18527-650x650.JPG"},
+{nome:"Raticida Granulado Kellmat 25 g", preco:"R$2,00", img:"https://http2.mlstatic.com/D_NQ_NP_974164-MLB96512963284_112025-O.webp"},
+{nome:"Klerat Mata Ratos Granulado 25 g", preco:"R$2,00", img:"https://http2.mlstatic.com/D_NQ_NP_968386-MLU74367059376_022024-O.webp"},
+{nome:"Klerat Parafinado (Bloco de 20g)", preco:"R$3,00", img:"https://tdppragas.com.br/wp-content/uploads/2019/10/klerat.jpg"},
+{nome:"Cola Rato Ratoeira Adesiva", preco:"R$7,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_827182-MLB113892542598_072026-F.webp"},
+{nome:"Veneno Talfon Top 1 Kg", preco:"R$39,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_898336-MLB92249600154_092025-F-veneno-carrapato-estrela-talfon-top-1-kg.webp"},
+{nome:"Veneno Talfon Top 100 g", preco:"R$10,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_996288-MLA99903551315_112025-F.webp"},
+{nome:"Lesmicida 50 g", preco:"R$10,00", img:"https://images.tcdn.com.br/img/img_prod/1446277/isca_lesma_pikapau_50g_1_20260622164058_d3845aec422c.jpeg"},
+{nome:"Matt Pulgões 5x10g", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_713860-MLB73706506165_122023-F-controle-de-pulgoes-cochonilha-em-hortas-flores-e-afins.webp"},
+{nome:"Pó Antipulgas Kelldrin 250g Para Pulgas Carrapatos E Piolhos", preco:"R$10,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_822795-MLA96417811423_102025-F.webp"},
+{nome:"Iscanill Formicida Isca Granulada ( 50 gramas )", preco:"R$2,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_814167-MLB115252756171_072026-F.webp"},
+{nome:"Tecnocell Formicel 10g", preco:"R$15,00", img:"https://http2.mlstatic.com/D_NQ_NP_2X_758127-MLA110846702553_042026-F.webp"}
+  ];
+
+  // ================== RENDERIZAÇÃO ==================
+  const grid = document.getElementById('grid');
+  const contador = document.getElementById('contador');
+  const semResultado = document.getElementById('semResultado');
+  const imgFallback = "https://via.placeholder.com/220x180.png?text=Sem+Imagem";
+
+  function renderizar(lista) {
+    grid.innerHTML = "";
+    contador.textContent = `${lista.length} produto(s) encontrado(s)`;
+    semResultado.style.display = lista.length === 0 ? "block" : "none";
+
+    lista.forEach(p => {
+      const msg = encodeURIComponent(`Olá! Tenho interesse no produto: ${p.nome} (${p.preco})`);
+      const card = document.createElement('div');
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-img">
+          <img src="${p.img}" alt="${p.nome}" loading="lazy" onerror="this.src='${imgFallback}'">
+        </div>
+        <div class="card-body">
+          <div class="card-title">${p.nome}</div>
+          <div class="card-preco">${p.preco}</div>
+          <a class="btn-comprar" href="https://wa.me/${whatsappNumero}?text=${msg}" target="_blank">
+            💬 Comprar via WhatsApp
+          </a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  renderizar(produtos);
+
+  // ================== BUSCA ==================
+  document.getElementById('busca').addEventListener('input', function(e) {
+    const termo = e.target.value.toLowerCase().trim();
+    const filtrados = produtos.filter(p => p.nome.toLowerCase().includes(termo));
+    renderizar(filtrados);
+  });
+
+  // ================== BOTÃO VOLTAR AO TOPO ==================
+  const topoBtn = document.getElementById('topo');
+  window.addEventListener('scroll', () => {
+    topoBtn.classList.toggle('show', window.scrollY > 400);
+  });
+</script>
+
+</body>
+</html>
