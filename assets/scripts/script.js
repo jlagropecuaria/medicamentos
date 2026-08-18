@@ -1037,7 +1037,7 @@ const contador = document.getElementById('contador');
 const semResultado = document.getElementById('semResultado');
 const imgFallback = "https://via.placeholder.com/220x180.png?text=Sem+Imagem";
 
-let categoriaAtual = 'racoes';
+let categoriaAtual = 'todos';
 
 function renderizar(lista) {
   grid.innerHTML = "";
