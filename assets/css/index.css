@@ -117,7 +117,7 @@ header.modo-vet {
 }
 
 .hero.modo-vet {
-  background: url("/assets/img/banner_vet.jfif") center/100% 100% no-repeat;
+  background: url("https://i.ibb.co/0j4Z3tNV/banner.png") center/100% 100% no-repeat;
   padding: 0;
   min-height: 220px;
 }
@@ -392,7 +392,7 @@ footer .footer-logo {
   }
 
   .hero.modo-vet {
-    background: url("/assets/img/veterinario.png") center/100% 100% no-repeat;
+    background: url("https://i.ibb.co/LXjKpQLC/veterinario.png") center/100% 100% no-repeat;
     position: relative;
   }
 
