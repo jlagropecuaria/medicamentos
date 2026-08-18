@@ -39,8 +39,7 @@ header.modo-vet {
   position: sticky;
   background:
     linear-gradient(135deg, rgba(13, 71, 161, 0.88), rgba(25, 118, 210, 0.82)),
-    url("https://images.unsplash.com/photo-1628009368231-7bb7cfc7990c?w=1400&q=70")
-      center/cover no-repeat;
+    url("https://images.unsplash.com/photo-1628009368231-7bb7cfc7990c?w=1400&q=70") center/cover no-repeat;
 }
 
 .header-content {
@@ -100,8 +99,7 @@ header.modo-vet {
 
 /* HERO */
 .hero {
-  background: url("https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1400&q=60")
-    center/cover no-repeat;
+  background: url("https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1400&q=60") center/cover no-repeat;
   position: relative;
   padding: 60px 20px;
   text-align: center;
@@ -119,8 +117,7 @@ header.modo-vet {
 }
 
 .hero.modo-vet {
-  background: url("https://img.magnific.com/fotos-premium/medicos-veterinarios-hamster-cao-gato-papagaio-pet-transportador-medicamentos-aquarela-ilustracao-mao-desenhada-padrao-sem-costura-em-fundo-branco_617379-3145.jpg?semt=ais_test_b&w=740&q=80")
-    center/cover no-repeat;
+  background: url("/assets/img/banner_vet.jfif") center/100% 100% no-repeat;
   padding: 0;
   min-height: 220px;
 }
@@ -383,12 +380,20 @@ footer .footer-logo {
 /* RESPONSIVO */
 @media (max-width: 600px) {
   .hero {
-    background: url("https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1400&q=60")
-      center/cover no-repeat;
+    background: url("https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1400&q=60") center/cover no-repeat;
     position: relative;
     padding: 0px 0px 30px 0px;
     text-align: center;
     color: #fff;
+  }
+
+  header.modo-vet {
+    padding: 0px 20px;
+  }
+
+  .hero.modo-vet {
+    background: url("/assets/img/veterinario.png") center/100% 100% no-repeat;
+    position: relative;
   }
 
   .hero h1 {
