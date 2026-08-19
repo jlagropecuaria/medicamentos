@@ -2004,16 +2004,22 @@ const produtosAcessorios = [
       "https://http2.mlstatic.com/D_NQ_NP_2X_884578-MLB44007305557_112020-F-kit-12-porta-ovo-branco-ornamental--passaros-e-aves.webp",
   },
   {
-    nome: "Ninho Juta Canário Roller 10,0 Diam. X G",
+    nome: "Ninho Juta Canário Roller Grande",
     preco: "R$15,00",
     imagem:
       "https://irapurupetcenter.com.br/wp-content/uploads/2021/01/NINHO-JUTA-CANARIO-BELGA.webp",
   },
   {
-    nome: "Ninho Juta Canário Roller M",
-    preco: "R$15,00",
+    nome: "Ninho Juta Canário Roller Médio",
+    preco: "R$10,00",
     imagem:
       "https://irapurupetcenter.com.br/wp-content/uploads/2021/01/NINHO-JUTA-CANARIO-BELGA.webp",
+  },
+  {
+    nome: "Ninho Carpete Com Suporte Horizontal Para Canario Do Reino",
+    preco: "R$10,00",
+    imagem:
+      "https://http2.mlstatic.com/D_NQ_NP_2X_969177-MLA93508482443_092025-F.webp",
   },
   {
     nome: "Ninho Coleiro Juta",
